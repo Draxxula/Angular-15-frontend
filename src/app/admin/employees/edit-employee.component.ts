@@ -107,9 +107,15 @@ export class EditEmployeeComponent implements OnInit {
     const accountId = (event.target as HTMLSelectElement).value;
     this.selectedAccount = this.accounts.find(acc => acc.id == Number(accountId));
 
+    // if (this.selectedAccount || !this.employeeForm.get('email')?.value) { 
+    //   this.alertService.warn('This account is already assigned to the employee.');
+    // }
+
     if (this.selectedAccount && this.selectedAccount.status === 'Inactive') {
       this.alertService.warn('You selected an inactive account. This will not affect employee status.');
     }
+
+    
   }
 
   onSubmit() {

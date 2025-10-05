@@ -1,3 +1,4 @@
+<!-- edit-request.component.html -->
 <div class="mt-4" *ngIf="!loading; else loadingTpl">
 
   <div class="card-header">
@@ -11,6 +12,7 @@
       <div class="mb-3">
         <label class="form-label">Type</label>
         <select class="form-control" formControlName="type">
+          <option value="" disabled>Select Type</option>
           <option *ngFor="let t of types" [value]="t">{{ t }}</option>
         </select>
       </div>
@@ -18,16 +20,17 @@
       <!-- Employee -->
       <div class="mb-3">
         <label for="employee" class="form-label">Employee</label>
-        <select
-            id="employee"
-            class="form-select"
-            formControlName="employeeId">
-            <option value="" disabled>Select an employee</option>
-            <option *ngFor="let emp of employees" [value]="emp.id">
+        <select id="employee" class="form-select" formControlName="employeeId">
+            <option value="" disabled>Select an employee</option> 
+          
+            <option *ngFor="let emp of employees" [value]="emp.employeeId"
+            [ngClass]="{ 'text-muted': emp.account?.status === 'Inactive' }">
             {{ emp.account?.email }} ({{emp.employeeId}})
+            <span *ngIf="emp.account?.status === 'Inactive'"> - [Inactive]</span>
             </option>
+
         </select>
-        </div>
+      </div>
 
       <!-- Items -->
       <div class="border p-3 mb-3">
@@ -36,24 +39,24 @@
           <div
             class="row g-2 align-items-center mb-2"
             *ngFor="let item of items.controls; let i = index"
-            [formGroupName]="i"
-          >
+            [formGroupName]="i">
+
             <div class="col-md-8">
               <input
                 type="text"
                 class="form-control"
                 placeholder="Name"
-                formControlName="name"
-              />
+                formControlName="name"/>
             </div>
+
             <div class="col-md-3">
               <input
                 type="number"
                 min="1"
                 class="form-control"
                 placeholder="Quantity"
-                formControlName="quantity"
-              />
+                formControlName="quantity"/>
+
             </div>
             <div class="col-auto">
               <button
@@ -71,13 +74,14 @@
         </button>
       </div>
 
-      <!-- Status -->
+      <!-- Status 
       <div class="mb-3">
         <label class="form-label">Status</label>
         <select class="form-control" formControlName="status">
+          <option value="">Select Status</option>
           <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
         </select>
-      </div>
+      </div> -->
 
       <!-- Buttons -->
       <div class="mt-4 d-flex justify-content-end">

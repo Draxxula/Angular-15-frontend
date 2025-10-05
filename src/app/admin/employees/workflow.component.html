@@ -1,0 +1,101 @@
+<!-- workflow.component.html -->
+<div class="container mt-4">
+  <div class="">
+    <h2>WORKFLOWS FOR EMPLOYEE: {{ employeeId }}</h2>
+    <p class="text-muted">({{ employee?.account?.email }})</p>
+    <p class="text-muted pt-2">Manage workflows associated with this employee</p>
+  </div>
+
+  <div class="" *ngIf="!loading; else loadingTpl">
+
+<div class="overflow-auto table-responsive">
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th style="width: 20%">Type</th>
+        <th style="width: 35%">Details</th>
+        <th style="width: 15%">Status</th>
+        <th style="width: 15%">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let wf of workflows">
+        <td><strong>{{ wf.type }}</strong></td>
+        <td>
+          <!-- Request Approval with Request Data -->
+          <div *ngIf="wf.type === 'Request Approval' && wf.request" class="request-details">
+            <div class="mb-2">
+              <strong>Request #{{ wf.request.id }}</strong> - {{ wf.request.type }}
+            </div>
+            <div class="mb-2">
+              <strong>Items Requested:</strong>
+              <div *ngIf="isJsonString(wf.request.items)" class="ms-3 mt-1">
+                <div *ngFor="let item of parseItems(wf.request.items)" class="d-flex align-items-center mb-1">
+                  <span class="bullet me-2">•</span>
+                  <span>{{ item.name }} <small class="text-muted">(x{{ item.quantity }})</small></span>
+                </div>
+              </div>
+              <div *ngIf="!isJsonString(wf.request.items)" class="ms-3">
+                {{ wf.request.items }}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Other Workflow Types -->
+          <div *ngIf="wf.type !== 'Request Approval'" class="regular-details">
+            {{ wf.details }}
+          </div>
+          
+          <!-- No Request Data Available -->
+          <div *ngIf="wf.type === 'Request Approval' && !wf.request" class="text-muted">
+            No request details available
+          </div>
+        </td>
+        <td>
+          <span class="badge" 
+                [ngClass]="{
+                  'bg-warning text-dark': wf.status === 'Pending',
+                  'bg-success': wf.status === 'Approved', 
+                  'bg-danger': wf.status === 'Rejected'
+                }">
+            {{ wf.status }}
+          </span>
+        </td>
+        <td>
+          <div class="d-flex flex-column gap-1">
+            <select
+                class="form-select form-select-sm"
+                [value]="wf.status"
+                (change)="updateStatus(wf.id, $any($event.target).value)">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+            <button *ngIf="wf.request" 
+                    class="btn btn-sm btn-outline-primary"
+                    [routerLink]="['/admin/requests']">
+              View Request
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+    <div class="text-end mt-3">
+      <button class="btn btn-secondary" routerLink="/admin/employees">
+        ← Back to Employees
+      </button>
+    </div>
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="text-center p-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading workflows...</p>
+    </div>
+  </ng-template>
+</div>

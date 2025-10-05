@@ -31,16 +31,20 @@
           <span class="badge bg-success" *ngIf="employee.status === 'Active'">Active</span>
           <span class="badge bg-danger" *ngIf="employee.status !== 'Active'">Inactive</span>
         </td>
-        <td class="align-middle">
-          <button [routerLink]="['/admin/requests']" class="actionbutton btn btn-secondary btn-sm me-1">Requests</button>
-          <button class="actionbutton btn btn-secondary btn-sm me-1">Workflows</button>
+        <td class="align-middle gap-1">
           <button 
-            class="actionbutton btn btn-secondary btn-sm me-1"
+            [routerLink]="['/admin/requests']" 
+            class="actionbutton btn btn-sm btn-outline-success btn-sm me-1">Requests</button>
+          <button 
+            [routerLink]="['/admin/employees/workflows', employee.employeeId]"
+            class="actionbutton btn btn-outline-success btn-sm me-1">Workflows</button>
+          <button 
+            class="actionbutton btn btn-outline-success btn-sm me-1"
             (click)="openTransfer(employee)">Transfer
           </button>
           <button 
             [routerLink]="['edit', employee.employeeId]" 
-            class="actionbutton btn btn-secondary btn-sm px-4">Edit
+            class="actionbutton btn btn-outline-primary btn-sm px-4">Edit
           </button>
         </td>
       </tr>

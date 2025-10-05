@@ -10,13 +10,15 @@ import { AddEmployeeComponent } from './add-employee.component';
 import { EditEmployeeComponent } from './edit-employee.component';
 import { TransferEmployeeComponent } from './transfer-employee.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
+import { WorkflowComponent } from './workflow.component';
 
 @NgModule({
   declarations: [
     EmployeeComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
-    TransferEmployeeComponent   // ✅ should be here
+    TransferEmployeeComponent ,  // ✅ should be here
+    WorkflowComponent
   ],
   imports: [
     CommonModule,
