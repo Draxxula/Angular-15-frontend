@@ -120,22 +120,22 @@ export class EditRequestComponent implements OnInit {
         }
       });
     },
-    error: (err) => {
-      console.error('Error loading employees:', err);
-      this.alertService.error('Failed to load employees');
-      this.loading = false;
-    }
-  });
-}
+      error: (err) => {
+        console.error('Error loading employees:', err);
+        this.alertService.error('Failed to load employees');
+        this.loading = false;
+      }
+    });
+  }
 
-onEmployeeChange(event: Event) {
-    const employeeId = (event.target as HTMLSelectElement).value;
-    this.selectedEmployee = this.employees.find(emp => emp.employeeId === employeeId); 
+  onEmployeeChange(event: Event) {
+      const employeeId = (event.target as HTMLSelectElement).value;
+      this.selectedEmployee = this.employees.find(emp => emp.employeeId === employeeId); 
 
-    if (this.selectedEmployee && this.selectedEmployee.account?.status === 'Inactive') {
-      this.alertService.warn('You selected an inactive employee. This will not affect request status.');
-    }
-    
+      if (this.selectedEmployee && this.selectedEmployee.account?.status === 'Inactive') {
+        this.alertService.warn('You selected an inactive employee. This will not affect request status.');
+      }
+      
   }
 
   onSubmit() {
@@ -145,12 +145,12 @@ onEmployeeChange(event: Event) {
     }
 
     const selectedEmpId = this.requestForm.value.employeeId;
-  const selectedEmp = this.employees.find(emp => emp.employeeId === selectedEmpId);
-  if (selectedEmp && selectedEmp.account?.status === 'Inactive') {
-    this.alertService.error('Cannot update request using an inactive employee.');
-    return;
-  }
-  
+    const selectedEmp = this.employees.find(emp => emp.employeeId === selectedEmpId);
+    if (selectedEmp && selectedEmp.account?.status === 'Inactive') {
+      this.alertService.error('Cannot update request using an inactive employee.');
+      return;
+    }
+
     this.submitting = true;
     const updated = {
       ...this.requestForm.value,

@@ -114,7 +114,6 @@ export class EditEmployeeComponent implements OnInit {
     if (this.selectedAccount && this.selectedAccount.status === 'Inactive') {
       this.alertService.warn('You selected an inactive account. This will not affect employee status.');
     }
-
     
   }
 

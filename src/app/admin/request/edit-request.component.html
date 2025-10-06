@@ -22,13 +22,11 @@
         <label for="employee" class="form-label">Employee</label>
         <select id="employee" class="form-select" formControlName="employeeId">
             <option value="" disabled>Select an employee</option> 
-          
             <option *ngFor="let emp of employees" [value]="emp.employeeId"
             [ngClass]="{ 'text-muted': emp.account?.status === 'Inactive' }">
             {{ emp.account?.email }} ({{emp.employeeId}})
             <span *ngIf="emp.account?.status === 'Inactive'"> - [Inactive]</span>
             </option>
-
         </select>
       </div>
 
