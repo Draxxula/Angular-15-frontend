@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 
 import { EmployeeService } from '../../_services/employee.service';
-import { AccountService } from '../../_services/accounts.service';
+import { AccountAdminService } from '../../_services/accounts.service';
 import { DepartmentService } from '../../_services/department.service';
 import { AlertService } from '@app/_services';
 
@@ -32,7 +32,7 @@ export class EditEmployeeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private employeeService: EmployeeService,
-    private accountService: AccountService,
+    private accountService: AccountAdminService,
     private departmentService: DepartmentService,
     private alertService: AlertService
   ) {}

@@ -2,6 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '@environments/environment';
+
+const baseUrl = `${environment.apiUrl}/employees`;
 
 export interface Account {
   id: number;

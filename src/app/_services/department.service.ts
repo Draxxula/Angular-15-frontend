@@ -7,7 +7,7 @@ const baseUrl = `${environment.apiUrl}/departments`;
 
 @Injectable({ providedIn: 'root' })
 export class DepartmentService {
-  private baseUrl = `http://localhost:4000/employees`; // your backend API
+  //private baseUrl = `http://localhost:4000/employees`; // your backend API
 
   constructor(private http: HttpClient) {}
 
