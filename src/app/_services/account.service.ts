@@ -16,43 +16,33 @@ export class AccountService {
     public account: Observable<Account | null>;
 
     constructor(
-        private router: Router,
-        private http: HttpClient
-    ) {
-        // ✅ Restore the account from localStorage when app starts
-        const storedAccount = localStorage.getItem('account');
-        this.accountSubject = new BehaviorSubject<Account | null>(
-            storedAccount ? JSON.parse(storedAccount) : null
-        );
-        this.account = this.accountSubject.asObservable();
-    }
+  private router: Router,
+  private http: HttpClient
+) {
+  const storedAccount = localStorage.getItem('account');
+  this.accountSubject = new BehaviorSubject<Account | null>(
+    storedAccount ? JSON.parse(storedAccount) : null
+  );
+  this.account = this.accountSubject.asObservable();
+}
 
-    public get accountValue() {
-        return this.accountSubject.value;
-    }
+login(email: string, password: string) {
+  return this.http.post<any>(`${baseUrl}/authenticate`, { email, password }, { withCredentials: true })
+    .pipe(map(account => {
+      localStorage.setItem('account', JSON.stringify(account));
+      this.accountSubject.next(account);
+      this.startRefreshTokenTimer();
+      return account;
+    }));
+}
 
-    login(email: string, password: string) {
-        return this.http.post<any>(`${baseUrl}/authenticate`, { email, password }, { withCredentials: true })
-            .pipe(map(account => {
-                // ✅ Save to localStorage for persistence
-                localStorage.setItem('account', JSON.stringify(account));
-
-                this.accountSubject.next(account);
-                this.startRefreshTokenTimer();
-                return account;
-            }));
-    }
-
-    logout() {
-        this.http.post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true }).subscribe();
-        this.stopRefreshTokenTimer();
-
-        // ❌ Clear stored account
-        localStorage.removeItem('account');
-
-        this.accountSubject.next(null);
-        this.router.navigate(['/account/login']);
-    }
+logout() {
+  this.http.post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true }).subscribe();
+  this.stopRefreshTokenTimer();
+  this.accountSubject.next(null);
+  localStorage.removeItem('account');
+  this.router.navigate(['/account/login']);
+}
 
     refreshToken() {
         return this.http.post<any>(`${baseUrl}/refresh-token`, {}, { withCredentials: true })
@@ -134,5 +124,9 @@ export class AccountService {
 
     private stopRefreshTokenTimer() {
         clearTimeout(this.refreshTokenTimeout);
+    }
+    // ✅ Add this getter
+    public get accountValue(): Account | null {
+        return this.accountSubject.value;
     }
 }
