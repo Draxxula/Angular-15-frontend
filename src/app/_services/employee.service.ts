@@ -24,38 +24,37 @@ export interface Employee {
   position: string;
   hireDate: string;
   status: string;
-  account?: Account;       // ✅ only one definition
-  department?: Department; // ✅ only one definition
+  account?: Account;
+  department?: Department;
 }
 
 @Injectable({ providedIn: 'root' })
-
 export class EmployeeService {
-  private baseUrl = `http://localhost:4000/employees`; // your backend API
+private baseUrl = 'https://websystemtest.vercel.app/';
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.baseUrl);
+    return this.http.get<Employee[]>(baseUrl);
   }
 
   getById(id: string): Observable<Employee> {
-    return this.http.get<Employee>(`${this.baseUrl}/${id}`);
+    return this.http.get<Employee>(`${baseUrl}/${id}`);
   }
 
   create(data: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.baseUrl, data);
+    return this.http.post<Employee>(baseUrl, data);
   }
 
   update(id: string, data: Employee): Observable<Employee> {
-    return this.http.put<Employee>(`${this.baseUrl}/${id}`, data);
+    return this.http.put<Employee>(`${baseUrl}/${id}`, data);
   }
 
-  transferDepartment(employeeId: string, departmentId: number) {
-  return this.http.put(`${this.baseUrl}/${employeeId}/transfer`, { departmentId });
-  } 
+  transferDepartment(employeeId: string, departmentId: number): Observable<any> {
+    return this.http.put(`${baseUrl}/${employeeId}/transfer`, { departmentId });
+  }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${baseUrl}/${id}`);
   }
 }

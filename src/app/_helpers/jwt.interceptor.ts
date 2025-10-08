@@ -1,3 +1,4 @@
+// src/app/_helpers/jwt.interceptor.ts
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -15,6 +16,7 @@ export class JwtInterceptor implements HttpInterceptor {
         const isLoggedIn = account && account.jwtToken;
         const isApiUrl = request.url.startsWith(environment.apiUrl);
         if (isLoggedIn && isApiUrl) {
+            console.log('✅ Adding Authorization header with token');
             request = request.clone({
                 setHeaders: { Authorization: `Bearer ${account.jwtToken}` }
             });
